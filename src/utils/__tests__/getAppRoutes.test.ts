@@ -12,6 +12,7 @@ vi.mock("fs", () => ({
   default: fsMocks,
 }));
 
+import path from "path";
 import * as fs from "fs";
 import { getAppRoutes, getBlogRoutes } from "../getAppRoutes";
 
@@ -87,24 +88,24 @@ describe("getBlogRoutes", () => {
 
     mockedFs.existsSync.mockImplementation(
       (p: string) =>
-        p.includes("blog1/index.md") || p.includes("blog2/index.md")
+        p.includes(path.join("blog1", "index.md")) || p.includes(path.join("blog2", "index.md"))
     );
 
     mockedFs.statSync.mockImplementation((p: string) => {
-      if (p.includes("blog1/index.md")) {
+      if (p.includes(path.join("blog1", "index.md"))) {
         return { mtime: new Date("2024-05-20") } as fs.Stats;
       }
-      if (p.includes("blog2/index.md")) {
+      if (p.includes(path.join("blog2", "index.md"))) {
         return { mtime: new Date("2024-06-26") } as fs.Stats;
       }
-      throw new Error("File not found");
+      throw new Error(`File not found: ${p}`);
     });
 
     mockedFs.readFileSync.mockImplementation((p: string) => {
-      if (p.includes("blog1/index.md")) {
+      if (p.includes(path.join("blog1", "index.md"))) {
         return `---\ndate: 2025-05-09\n---\nBlog 1 content`;
       }
-      if (p.includes("blog2/index.md")) {
+      if (p.includes(path.join("blog2", "index.md"))) {
         return `---\ndate: 2024-06-26\n---\nBlog 2 content`;
       }
       return "";
@@ -121,7 +122,7 @@ describe("getBlogRoutes", () => {
 
   it("returns blog routes with lastmod from index.md missing", () => {
     mockedFs.existsSync.mockImplementation((p: string) =>
-      p.includes("blog2/index.md")
+      p.includes(path.join("blog2", "index.md"))
     );
     const routes = getBlogRoutes();
     expect(routes).toEqual([
