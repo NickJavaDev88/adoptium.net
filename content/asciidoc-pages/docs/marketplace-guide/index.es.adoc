@@ -1,6 +1,6 @@
 = Guía para Publicadores del Marketplace de Adoptium(R)
-:description: Guía para publicadores del Marketplace de Adoptium: pasos para publicar binarios OpenJDK, requisitos TCK, verificación AQAvit y metadatos del producto
-:keywords: guía publicadores marketplace Adoptium, publicador OpenJDK, marketplace Java, verificación AQAvit, TCK Oracle, Eclipse Adoptium
+:description: Guía para Publicadores del Marketplace de Adoptium
+:keywords: marketplace adoptium
 :orgname: Eclipse Adoptium
 :lang: es
 :page-authors: gdams, tellison, jiekang

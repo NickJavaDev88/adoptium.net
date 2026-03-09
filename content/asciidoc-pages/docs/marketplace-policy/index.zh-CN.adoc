@@ -1,6 +1,6 @@
 = Adoptium(R) 软件产品市场政策
-:description: Adoptium 市场政策：OpenJDK Java 二进制文件的质量标准、AQAvit 验证和 Java SE 兼容性要求
-:keywords: Adoptium 市场政策, OpenJDK 市场, AQAvit 验证, Java SE 兼容性, Java 质量认证, Eclipse Adoptium
+:description: Adoptium 市场政策
+:keywords: Adoptium 市场政策
 :orgname: Eclipse Adoptium
 :lang: zh-CN
 :page-authors: gdams, tellison

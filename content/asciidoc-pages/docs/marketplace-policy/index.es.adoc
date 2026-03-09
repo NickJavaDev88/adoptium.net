@@ -1,6 +1,6 @@
 = Política del Marketplace de Productos de Software de Adoptium(R)
-:description: Política del Marketplace de Adoptium: criterios de calidad, verificación AQAvit y compatibilidad Java SE para binarios OpenJDK
-:keywords: política marketplace Adoptium, marketplace OpenJDK, verificación AQAvit, compatibilidad Java SE, calidad Java, Eclipse Adoptium
+:description: Política del Marketplace de Adoptium
+:keywords: política de marketplace Adoptium
 :orgname: Eclipse Adoptium
 :lang: es
 :page-authors: gdams, tellison

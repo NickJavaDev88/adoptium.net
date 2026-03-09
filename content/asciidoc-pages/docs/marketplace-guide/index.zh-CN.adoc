@@ -1,6 +1,6 @@
 = Adoptium(R) 市场发布商指南
-:description: Adoptium 市场发布商指南：发布 OpenJDK 二进制文件的步骤，包括 TCK 合规、AQAvit 验证和产品元数据要求
-:keywords: Adoptium 市场发布商指南, OpenJDK 市场, Java 发布商, AQAvit 验证, TCK 认证, Eclipse Adoptium
+:description: Adoptium 市场发布商指南
+:keywords: adoptium 市场
 :orgname: Eclipse Adoptium
 :lang: zh-CN
 :page-authors: gdams, tellison, jiekang
