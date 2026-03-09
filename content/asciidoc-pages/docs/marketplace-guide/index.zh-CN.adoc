@@ -1,0 +1,116 @@
+= Adoptium(R) 市场发布商指南
+:description: Adoptium 市场发布商指南：发布 OpenJDK 二进制文件的步骤，包括 TCK 合规、AQAvit 验证和产品元数据要求
+:keywords: Adoptium 市场发布商指南, OpenJDK 市场, Java 发布商, AQAvit 验证, TCK 认证, Eclipse Adoptium
+:orgname: Eclipse Adoptium
+:lang: zh-CN
+:page-authors: gdams, tellison, jiekang
+:page-based-on: 848c4fbb777b4c656ba5f667fd037a6df72559fd
+
+== 简介
+
+本文档为有资格通过
+link:/marketplace[Adoptium 市场]
+推广和销售 OpenJDK 运行时的发布商提供指导。
+
+发布商可以是供应商、非营利实体、用户组以及其他认同
+link:/docs/marketplace-policy[Adoptium 市场政策^]
+中所体现价值观的组织。发布商可提供开源或商业授权的产品，对最终用户可以免费或收费。市场不要求特定的版本、平台、使用或许可条款，通过市场提供的二进制文件也可能在其他地方获得。所有通过 Adoptium 市场提供的二进制文件必须符合市场政策中定义的兼容性和质量标准。
+
+市场以
+link:/marketplace[网站]
+和
+https://marketplace-api.adoptium.net/[应用程序编程接口^]
+(API) 两种形式提供给最终用户，由 Adoptium 项目托管和维护。
+
+鼓励发布商与
+link:/members[Adoptium 工作组]
+讨论其在市场中的参与事宜，工作组将对以下步骤提供指导和协助。如果以下正式政策和协议与本发布商指南存在任何矛盾，以正式政策和协议为准。
+
+
+== 准备工作（非技术性）
+
+潜在发布商及其产品必须满足
+link:/marketplace-policy[Adoptium 市场政策]
+中描述的标准。这些标准包括以适当级别加入 Adoptium 工作组，使您在市场的政策和运营中拥有发言权。并非工作组的每位成员都会成为发布商。也鼓励最终用户加入工作组，以帮助指导市场产品的方向和需求。
+
+希望在市场中发布产品的工作组成员必须同意
+https://www.eclipse.org/legal/documents/eclipse-adoptium-marketplace-publisher-agreement.pdf[Adoptium 市场发布商协议]。
+该协议规定了 Eclipse 基金会接受您的产品推广的条款和条件。被市场接受后，产品将从旨在推广该上下文中二进制文件价值的营销活动中受益。
+
+
+== 发布流程概述
+
+Adoptium 市场网站和 API 由您提供的关于您的合格产品的元数据驱动。您以
+https://www.json.org/[JSON^]
+机器可读格式提供元数据，并附带
+https://en.wikipedia.org/wiki/Digital_signature[安全数字签名^]，
+以确保您发布信息的真实性、完整性和不可否认性。
+
+作为发布商，您负责自我认证元数据中描述的每个产品的信息是准确的，并符合您在
+link:/marketplace-policy[市场政策]
+中的义务。
+
+您控制产品元数据及其更新频率。Adoptium 市场应用程序将利用这些信息推广您的产品，并引导用户直接从您控制的网站下载您的产品。Adoptium 不托管或分发您的二进制文件。
+
+当通过 Adoptium 市场发起下载时，用户将被引导至下载后页面，您可以在那里提供关于您的产品、组织、服务等额外信息的链接。
+
+
+== 提供发布商信息
+
+发布商必须提供以下信息才能被纳入市场。
+
+ * 发布商名称：您希望在市场网站和 API 中的显示方式。
+ * 徽标图像：在网站上作为您发布商身份的视觉展示。
+ * 上架数据位置：Adoptium 用于检索您的市场上架元数据的基础 URL。
+ * 签名公钥：我们将用于验证您签名的公钥。
+ * 下载后页面：下载您的产品时，我们应将网站用户引导至的网页。
+
+我们不期望您频繁更改这些信息，因为 Adoptium 会将这些内容添加到市场应用程序配置中。
+
+发布商信息通过在 Adoptium 仓库中提交
+https://github.com/adoptium/adoptium/issues/new/choose[新的发布商申请议题^]
+来提供。如果您后续需要更改，也可以在同一仓库中提出新议题。
+
+
+== 通过 Oracle TCK 测试
+
+您通过 Adoptium 市场发布的每个二进制文件必须完全满足您通过 Adoptium 市场推广的 Java 平台版本的当前 TCK 的所有要求。您负责在发布二进制文件之前确保已完成此验证。Adoptium 不会代表您进行检查。
+
+Adoptium 项目
+https://projects.eclipse.org/projects/adoptium.temurin-compliance[开发和使用工具^]
+使运行和分析 TCK 变得更加容易。欢迎发布商参与技术项目并使用这些工具来帮助在其自己的产品上运行 TCK。
+
+
+== 通过 AQAvit 验证测试
+
+您通过 Adoptium 市场发布的每个二进制文件必须完全满足您通过 Adoptium 市场推广的版本的当前 AQAvit 测试套件的所有要求。您负责在发布二进制文件之前确保已完成此验证。Adoptium 不会代表您进行检查。
+
+link:/aqavit[AQAvit 验证流程]
+必须在二进制文件首次通过市场提供时得到满足。发布商不需要针对 AQAvit 验证套件的后续版本验证二进制文件。一旦二进制文件满足标准，就可以继续通过市场提供。
+
+AQAvit 是由 Adoptium 项目管理的开源测试套件。欢迎发布商参与 AQAvit 项目，以获取在其自己产品上运行 AQAvit 的帮助。
+
+
+== 产品上架信息
+
+您在市场上的产品上架信息可以托管在任何您直接控制的、支持
+https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol[HTTP^]
+请求和响应的地方，包括您自己的网站、GitHub 等。虽然 Adoptium 会通过使用基于已验证信息的数字签名来确认安全地从您那里接收信息，但您最终对通过上架数据位置 URL 提供给市场的信息负责。
+
+产品上架信息由结构化 JSON 格式文件组成，可灵活支持多个构建版本。信息以<<提供发布商信息,发布商信息>>中提供的上架数据位置为根目录，格式描述见
+link:/docs/marketplace-listing[Adoptium 市场发布商产品上架仓库]
+文档。
+
+// TODO: How does a publisher check the logs of successful/failed pulls and schema validation?
+如果产品上架信息不符合
+link:/docs/marketplace-listing[产品上架结构]、
+市场文件模式，或签名无法成功验证内容，则该信息将被拒绝。如果上架文件多次未通过这些验证检查，我们将与您联系。
+
+== 下载后页面
+
+// TODO: Should the post-download be per-publisher or per-product (i.e. embedded in the metadata).
+当用户通过市场网站选择下载您的产品时，他们将被引导至下载后页面，同时从您的分发服务器发起下载。下载后页面将感谢用户并标识发布商，包括指向您所选网页的链接。我们预想该网页将引导用户了解您的产品、组织、服务等相关信息。
+
+下载后页面链接不被
+https://marketplace-api.adoptium.net/[Adoptium 市场 API]
+使用。

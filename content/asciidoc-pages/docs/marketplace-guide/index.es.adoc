@@ -1,0 +1,111 @@
+= Guía para Publicadores del Marketplace de Adoptium(R)
+:description: Guía para publicadores del Marketplace de Adoptium: pasos para publicar binarios OpenJDK, requisitos TCK, verificación AQAvit y metadatos del producto
+:keywords: guía publicadores marketplace Adoptium, publicador OpenJDK, marketplace Java, verificación AQAvit, TCK Oracle, Eclipse Adoptium
+:orgname: Eclipse Adoptium
+:lang: es
+:page-authors: gdams, tellison, jiekang
+:page-based-on: 848c4fbb777b4c656ba5f667fd037a6df72559fd
+
+== Introducción
+
+Este documento proporciona orientación para los publicadores que son elegibles para comercializar y promover entornos de ejecución OpenJDK a través del
+link:/marketplace[Marketplace de Adoptium].
+
+Los publicadores pueden ser vendedores, entidades sin fines de lucro, grupos de usuarios y otros que compartan los valores plasmados en la
+link:/docs/marketplace-policy[política del marketplace de Adoptium^].
+Los publicadores pueden ofrecer productos de código abierto o con licencia comercial, utilizables de forma gratuita o de pago para el usuario final. El marketplace no requiere versión, plataforma, términos de uso o de licencia específicos, y los binarios disponibles a través del marketplace también pueden estar disponibles en otros lugares. Todos los binarios ofrecidos a través del marketplace de Adoptium deben cumplir con los criterios de compatibilidad y calidad definidos en la política del marketplace.
+
+El marketplace está disponible para los usuarios finales como
+link:/marketplace[sitio web]
+y como
+https://marketplace-api.adoptium.net/[interfaz de programación de aplicaciones^]
+(API) alojada y mantenida por el proyecto Adoptium.
+
+Se anima a los publicadores a que discutan su participación en el marketplace con el
+link:/members[Grupo de Trabajo Adoptium],
+quien les proporcionará orientación y asistencia con los pasos descritos a continuación. En caso de contradicciones entre las políticas formales y los acuerdos referenciados a continuación y esta guía para publicadores, prevalecerán las políticas formales y los acuerdos.
+
+
+== Pasos Preparatorios No Técnicos
+
+Los posibles publicadores y sus productos deben cumplir con los criterios descritos en la
+link:/marketplace-policy[Política del Marketplace de Adoptium]. Estos criterios incluyen convertirse en miembro del grupo de trabajo Adoptium en un nivel apropiado, lo que le otorga voz en la política y el funcionamiento del marketplace. No todos los miembros del grupo de trabajo serán publicadores. También se anima a los usuarios finales a unirse al grupo de trabajo para ayudar a orientar los productos y requisitos de los productos del marketplace.
+
+Los miembros del grupo de trabajo que deseen publicar un producto en el marketplace deben aceptar el
+https://www.eclipse.org/legal/documents/eclipse-adoptium-marketplace-publisher-agreement.pdf[Acuerdo de Publicador del Marketplace de Adoptium]. Este acuerdo establece los términos y condiciones bajo los cuales la Fundación Eclipse acepta la promoción de su producto. Los productos se beneficiarán de iniciativas de marketing destinadas a promover el valor de los binarios en este contexto cuando sean aceptados en el marketplace.
+
+
+== Descripción General del Proceso de Publicación
+
+El sitio web y la API del marketplace de Adoptium se basan en los metadatos que usted proporciona sobre sus productos elegibles. Los metadatos se ponen a disposición en formato legible por máquina
+https://www.json.org/[JSON^]
+junto con una
+https://en.wikipedia.org/wiki/Digital_signature[firma digital segura^]
+para garantizar la autenticidad, integridad y no repudio de la información que usted publica.
+
+Como publicador, usted es responsable de auto-certificar que la información de cada producto descrito en los metadatos es precisa y se ajusta a sus obligaciones en la
+link:/marketplace-policy[Política del Marketplace].
+
+Usted controla los metadatos de sus productos y la frecuencia con que se actualizan. La aplicación del marketplace de Adoptium utilizará esa información para comercializar sus productos y dirigir a los usuarios a descargar su producto directamente desde un sitio bajo su control. Adoptium no aloja ni distribuye sus binarios.
+
+Cuando se inicia una descarga a través del marketplace de Adoptium, los usuarios serán dirigidos a una página post-descarga donde puede proporcionar un enlace a información adicional sobre su producto, organización, servicios, etc.
+
+
+== Proporcionando Información del Publicador
+
+Los publicadores deben proporcionar la siguiente información para ser incluidos en el marketplace.
+
+ * Nombre del publicador: cómo desea ser conocido en el sitio web y la API del marketplace.
+ * Imagen del logotipo: una representación visual de usted como publicador para su uso en el sitio web.
+ * Ubicación de datos del listado: la URL base que Adoptium utilizará para recuperar los metadatos del listado del marketplace.
+ * Clave pública de firma: la clave pública que usaremos para verificar su firma.
+ * Página post-descarga: la página web a la que debemos dirigir a los usuarios del sitio web al descargar su producto.
+
+No esperamos que cambie estos datos con frecuencia, ya que Adoptium los incorporará en la configuración de la aplicación del marketplace.
+
+La información del publicador se proporciona abriendo una
+https://github.com/adoptium/adoptium/issues/new/choose[nueva solicitud de publicador^]
+en el repositorio de Adoptium. Puede abrir una nueva solicitud en el mismo repositorio si necesita cambiarla posteriormente.
+
+
+== Superando las Pruebas TCK de Oracle
+
+Cada binario que publique a través del marketplace de Adoptium debe satisfacer completamente todos los requisitos del TCK vigente para la versión de la Plataforma Java que está promoviendo a través del marketplace de Adoptium. Usted es responsable de asegurarse de que esto haya ocurrido antes de publicar el binario. Adoptium no realizará esta verificación en su nombre.
+
+Los proyectos de Adoptium
+https://projects.eclipse.org/projects/adoptium.temurin-compliance[desarrollan y utilizan herramientas^]
+que facilitan la ejecución y el análisis del TCK. Los publicadores son bienvenidos a participar en el proyecto técnico y utilizar estas herramientas para ayudar con la tarea de ejecutar el TCK en sus propios productos.
+
+
+== Superando las Pruebas de Verificación AQAvit
+
+Cada binario que publique a través del marketplace de Adoptium debe satisfacer completamente todos los requisitos del conjunto de pruebas AQAvit vigente para la versión que está promoviendo a través del marketplace de Adoptium. Usted es responsable de asegurarse de que esto haya ocurrido antes de publicar el binario. Adoptium no realizará esta verificación en su nombre.
+
+El
+link:/aqavit[proceso de verificación AQAvit]
+debe satisfacerse en el momento en que el binario se ofrece inicialmente a través del marketplace. Los publicadores no están obligados a verificar el binario con versiones posteriores del conjunto de verificación AQAvit. Una vez que un binario cumple con los criterios, puede seguir ofreciéndose a través del marketplace.
+
+AQAvit es un conjunto de pruebas de código abierto gestionado en el proyecto Adoptium. Los publicadores son bienvenidos a participar en el proyecto AQAvit para obtener ayuda con la tarea de ejecutar AQAvit en sus propios productos.
+
+
+== Información del Listado de Productos
+
+El listado de sus productos para el marketplace puede estar alojado en cualquier lugar bajo su control directo que admita solicitudes y respuestas
+https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol[HTTP^],
+incluida su propia propiedad web, GitHub, etc. Aunque Adoptium verificará que la información se recibe de usted de forma segura mediante una firma digital basada en información verificada, usted es en última instancia responsable de la información proporcionada al marketplace a través de la URL de ubicación de datos del listado.
+
+La información del listado de productos comprende archivos en formato JSON estructurado, con flexibilidad para permitir múltiples compilaciones y versiones. La información tiene como raíz la ubicación de datos del listado proporcionada en la <<Proporcionando-Información-del-Publicador,información del publicador>> en el formato descrito en la documentación del
+link:/docs/marketplace-listing[Repositorio de Listado de Productos del Publicador del Marketplace de Adoptium].
+
+// TODO: How does a publisher check the logs of successful/failed pulls and schema validation?
+La información del listado de productos será rechazada si no cumple con la
+link:/docs/marketplace-listing[estructura del listado de productos],
+el esquema del archivo del marketplace, o si la firma no verifica el contenido correctamente. Nos pondremos en contacto con usted si el archivo de listado falla repetidamente estas validaciones.
+
+== Página Post-descarga
+
+// TODO: Should the post-download be per-publisher or per-product (i.e. embedded in the metadata).
+Cuando un usuario elige descargar su producto a través del sitio web del marketplace, será dirigido a una página post-descarga mientras la descarga se inicia desde su servidor de distribución. La página post-descarga agradecerá al usuario e identificará al publicador, incluyendo un enlace a una página web de su elección. Imaginamos que esta página web llevará al usuario a información sobre su producto, organización, servicios, etc.
+
+El enlace a la página post-descarga no es utilizado por la
+https://marketplace-api.adoptium.net/[API del marketplace de Adoptium].
