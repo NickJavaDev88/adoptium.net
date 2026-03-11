@@ -350,7 +350,7 @@ exports[`Download page > renders correctly 1`] = `
               Monthly Sustainer: Contribute as an individual sustainer to ensure via 
               <a
                 class="text-pink"
-                href="https://github.com/sponsors/adoptium"
+                href="https://www.eclipse.org/sponsor/adoptium/?scope=wesbite&campaign=become-sustainer"
                 rel="noopener noreferrer"
                 target="_blank"
               >

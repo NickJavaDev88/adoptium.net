@@ -57,7 +57,7 @@ export default function SustainersPage() {
   const headerButtons = (
     <>
       <Link
-        href="https://github.com/sponsors/adoptium"
+        href="https://www.eclipse.org/sponsor/adoptium/?scope=wesbite&campaign=become-sustainer"
         className="w-full sm:w-auto"
         target="_blank"
         rel="noopener noreferrer"
