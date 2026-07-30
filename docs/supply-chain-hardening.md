@@ -13,16 +13,16 @@ proposal below is narrow on purpose:
 - All GitHub Actions are pinned by commit SHA, not by tag.
 - `ci.yml` declares `permissions: contents: read` at the top level.
 - CodeQL analysis and OSSF Scorecard both run.
-- Dependabot is configured for npm and github-actions, daily, with sensible groupings.
+- Dependabot is configured for npm and `github-actions`, daily, with sensible groupings.
 
 Against that, one gap stands out:
 
-| Gap | Where |
-| --- | --- |
-| CI installs with `npm install`, not `npm ci` | `.github/workflows/ci.yml:25`, `.github/workflows/update-snapshot.yml:46` |
-| No `.npmrc`, so every install-time default is npm's default | repository root |
-| No quarantine on freshly published versions | — |
-| Dependency changes are reviewed as lockfile diffs, with no vulnerability surfacing in the PR | no `dependency-review-action` in any workflow |
+| Gap                                                                                          | Where                                                                     |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| CI installs with `npm install`, not `npm ci`                                                 | `.github/workflows/ci.yml:25`, `.github/workflows/update-snapshot.yml:46` |
+| No `.npmrc`, so every install-time default is npm's default                                  | repository root                                                           |
+| No quarantine on freshly published versions                                                  | —                                                                         |
+| Dependency changes are reviewed as lockfile diffs, with no vulnerability surfacing in the PR | no `dependency-review-action` in any workflow                             |
 
 `npm install` is the important one. It is allowed to re-resolve the dependency graph and rewrite
 `package-lock.json`, which means a CI run can install a version that nobody reviewed and that is
@@ -35,10 +35,10 @@ change with no downside for this repository, since the lockfile is committed.
 The npm compromises that mattered recently were not subtle long games. They were loud, and they
 were caught quickly:
 
-| Incident | Time to detection / removal |
-| --- | --- |
-| `debug` / `chalk` (September 2025) | ~2.5 hours |
-| Shai-Hulud | ~12 hours |
+| Incident                                                                        | Time to detection / removal        |
+| ------------------------------------------------------------------------------- | ---------------------------------- |
+| `debug` / `chalk` (September 2025)                                              | ~2.5 hours                         |
+| Shai-Hulud                                                                      | ~12 hours                          |
 | TanStack — 84 malicious versions across 42 `@tanstack/*` packages (11 May 2026) | published within a 6-minute window |
 
 In each case, a consumer who simply refused to install anything published in the last 24 hours
@@ -46,24 +46,24 @@ would never have been exposed. That is the entire idea behind a release-age quar
 one day of latency on new versions and requires trusting nothing new.
 
 One correction to a common assumption is worth recording here. **Provenance attestations would
-not have stopped the TanStack compromise.** That wave was the first to obtain *valid* SLSA
+not have stopped the TanStack compromise.** That wave was the first to obtain _valid_ SLSA
 provenance on malicious packages — the attacker extracted an OIDC token from the GitHub Actions
 runner, so the packages were genuinely signed by the real pipeline. Signature verification
-confirms *where* a package was built, not that it is safe. A time window does not have that
+confirms _where_ a package was built, not that it is safe. A time window does not have that
 weakness.
 
 ## Option A — stay on npm (configuration only)
 
 Branch: `supply-chain/npm-hardening`.
 
-| Change | Effect |
-| --- | --- |
-| `npm install` → `npm ci` in both workflows | CI installs exactly the reviewed lockfile, or fails |
-| `min-release-age=1` in `.npmrc` | Versions published less than a day ago are not resolved |
-| `engine-strict=true` + `engines.npm >= 11.10.0` | Turns an old-npm silent no-op into a hard failure |
-| Explicit `npm install -g npm@^11.16.0` step in CI | Guarantees the runner's npm actually supports the above |
-| `allowScripts` in `package.json` | Records which dependencies are permitted to run install scripts |
-| `dependency-review-action` job on pull requests | New dependencies and known vulnerabilities appear in the PR |
+| Change                                            | Effect                                                          |
+| ------------------------------------------------- | --------------------------------------------------------------- |
+| `npm install` → `npm ci` in both workflows        | CI installs exactly the reviewed lockfile, or fails             |
+| `min-release-age=1` in `.npmrc`                   | Versions published less than a day ago are not resolved         |
+| `engine-strict=true` + `engines.npm >= 11.10.0`   | Turns an old-npm silent no-op into a hard failure               |
+| Explicit `npm install -g npm@^11.16.0` step in CI | Guarantees the runner's npm actually supports the above         |
+| `allowScripts` in `package.json`                  | Records which dependencies are permitted to run install scripts |
+| `dependency-review-action` job on pull requests   | New dependencies and known vulnerabilities appear in the PR     |
 
 Two details in that table are less obvious than they look.
 
@@ -78,7 +78,7 @@ is `ignore-scripts=true`, and it would break this repository. With `ignore-scrip
 not run pre/post scripts around `npm run`, so `npm run build` would stop triggering the
 `postbuild` hook that executes `scripts/build-search-index.mjs`, and production builds would ship
 without a search index — silently. `allowScripts` is the correct mechanism: it applies to
-*dependencies'* install scripts only and leaves the project's own scripts alone.
+_dependencies'_ install scripts only and leaves the project's own scripts alone.
 
 The eight entries in `allowScripts` are every dependency in the current lockfile flagged
 `hasInstallScript`, all of them native-binary packages that legitimately need a build step:
@@ -95,12 +95,12 @@ Branch: `supply-chain/pnpm-migration`.
 
 pnpm 11 ships supply-chain defaults that npm still leaves opt-in:
 
-| Setting | pnpm 11 default | What it does |
-| --- | --- | --- |
-| `minimumReleaseAge` | `1440` (minutes = 1 day), **on by default** | Same quarantine as Option A, without configuration |
-| `blockExoticSubdeps` | `true`, **on by default** | Transitive dependencies may not resolve from git repos or tarball URLs; only direct dependencies may |
-| `trustPolicy` | `off` — **opt-in** | Set to `no-downgrade`, fails if a package's trust level dropped versus earlier releases |
-| `dangerouslyAllowAllBuilds` | `false` | Dependency build scripts require explicit approval via `allowBuilds` |
+| Setting                     | pnpm 11 default                             | What it does                                                                                         |
+| --------------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `minimumReleaseAge`         | `1440` (minutes = 1 day), **on by default** | Same quarantine as Option A, without configuration                                                   |
+| `blockExoticSubdeps`        | `true`, **on by default**                   | Transitive dependencies may not resolve from Git repos or tarball URLs; only direct dependencies may |
+| `trustPolicy`               | `off` — **opt-in**                          | Set to `no-downgrade`, fails if a package's trust level dropped versus earlier releases              |
+| `dangerouslyAllowAllBuilds` | `false`                                     | Dependency build scripts require explicit approval via `allowBuilds`                                 |
 
 Only `trustPolicy` requires a deliberate decision; everything else in that table is already how
 pnpm 11 behaves out of the box.
@@ -110,7 +110,7 @@ pnpm 11 behaves out of the box.
 This is not hypothetical. Turning on `trustPolicy: no-downgrade` and installing this repository's
 current dependency tree fails:
 
-```
+```text
 [ERR_PNPM_TRUST_DOWNGRADE] High-risk trust downgrade for
 "eslint-import-resolver-typescript@3.10.1" (possible package takeover)
 
@@ -156,7 +156,7 @@ removes a class of undeclared, unreviewed, and therefore unpinned dependency.
 - **`overrides` must move into `pnpm-workspace.yaml`, not into a `pnpm` field in
   `package.json`.** The npm-specific top-level `overrides` field is ignored by pnpm, and pnpm 11
   no longer reads the `pnpm` field in `package.json` either — it warns `The "pnpm" field in
-  package.json is no longer read by pnpm` and carries on. Both wrong placements silently drop the
+package.json is no longer read by pnpm` and carries on. Both wrong placements silently drop the
   `typescript@^6.0.0` pin for `openapi-typescript` while appearing to have configured it. The
   correct home is a top-level `overrides:` key in `pnpm-workspace.yaml`, using pnpm's
   `parent>child` selector syntax.
