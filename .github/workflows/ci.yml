@@ -22,10 +22,38 @@ jobs:
           node-version-file: ".nvmrc"
           cache: npm
 
-      - run: npm install
+      # .nvmrc pins only the Node major, and the bundled npm varies across
+      # Node 24 patch releases (24.11.1 ships npm 11.6.2, 24.18.0 ships
+      # 11.16.0). min-release-age in .npmrc requires npm >= 11.10.0, so pin it
+      # explicitly rather than depending on what the runner happens to resolve.
+      - name: Ensure npm supports min-release-age
+        run: npm install -g npm@^11.16.0
+
+      # npm ci installs exactly what package-lock.json pins and fails if the
+      # two disagree. npm install would silently rewrite the lockfile and could
+      # resolve versions that were never reviewed.
+      - run: npm ci
       - run: npm run coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  # Surfaces newly added dependencies and their known vulnerabilities directly
+  # in the pull request, so a dependency change is reviewed as a dependency
+  # change rather than as an opaque lockfile diff.
+  dependency-review:
+    name: Dependency Review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: high
+          comment-summary-in-pr: on-failure
